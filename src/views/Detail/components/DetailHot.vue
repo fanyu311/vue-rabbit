@@ -1,6 +1,7 @@
 <script setup>
 //  以24小时热榜为例获取数据渲染模板
-import { getchHotGoodsAPI} from '@/apis/detail'
+import { getchHotGoodsAPI } from '@/apis/detail'
+import { computed } from 'vue'
 import { onMounted, ref } from 'vue'
 import {useRoute} from 'vue-router'
 // 设计props参数 适配不同的title和数据
