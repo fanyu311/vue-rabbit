@@ -1,11 +1,19 @@
 <script setup>
 
 import { ref } from 'vue'
+
+import { ElMessage } from 'element-plus'
+import 'element-plus/es/components/message/style/css'
+import { useRouter } from 'vue-router'
+
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 // 表单校验（账号名+密码）
 // 1.准备表单对象
 const form = ref({
-  account: '',
-  password: '',
+  account: 'xiaotuxian001',
+  password: '123456',
   agree: true,
 })
 
@@ -35,14 +43,23 @@ const rules = {
 }
 // 获取form实例做统一校验
 const formRef = ref(null)
+// 返回一个实例对象
+const router = useRouter()
 const doLogin = () => {
+  const {account, password} = form.value
   // 调用实例方法
-  formRef.value.validate((valid) => {
+  formRef.value.validate(async (valid) => {
     // valid：所有表单通过校验 才为true
     console.log(valid);
     // 以valid作为判断条件，如果通过校验才执行登录逻辑
-    if (valid) { 
+    if (valid) {
       // TODO LOGIN
+      await userStore.getUserInfo({ account, password });
+      // 提示用户
+      ElMessage({ type: 'success', message: '登陆成功' })
+      // 跳转首页
+      // 使用。replace防止用户重复的返回
+      router.replace({ path: '/' })
     }
   })
 }
